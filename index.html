@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, initial-scale=1"
+    />
+    <meta name="description" content="EUA Afora" />
+    <meta name="author" content="Ellen Silva" />
+    <meta
+      name="keywords"
+      content="Pátria, EUA, Estados Unidos, América, Latemar, Lago Louise, Lago di Braies"
+    />
+    <title>EUA Afora</title>
+    <link rel="stylesheet" href="./pages/index.css" />
+    <link href="./vendor/fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+      <img class="header__logo" src="./images/Vector-3.svg" alt="logo" />
+      <img class="header__line" src="./images/Line.png" alt="line" />
+    </header>
+    <main class="content">
+      <section class="profile">
+        <img
+          class="profile__avatar"
+          src="./images/Avatar.png"
+          alt="Imagem de perfil"
+        />
+        <div class="profile__info">
+          <h1 class="profile__name">Jacques Cousteau</h1>
+          <h3 class="profile__text">Explorador</h3>
+          <div class="profile__edit">
+            <img
+              alt="Botão de edição"
+              id="Img"
+              class="profile__edtimg"
+              src="./images/Editbutton.png"
+            />
+            <div id="Modal" class="form">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <form novalidate id="form">
+                  <h2 class="modal-content__title">Editar perfil</h2>
+                  <div class="modal-content__field">
+                    <input
+                      type="text"
+                      class="modal-content__name"
+                      placeholder="Jacques Cousteau"
+                      required
+                      minlength="2"
+                      maxlength="20"
+                    />
+                    <img
+                      class="modal__line"
+                      src="./images/Line.png"
+                      alt="line"
+                    />
+                    <div class="error-message" id="name-error"></div>
+                  </div>
+                  <div class="modal-content__field">
+                    <input
+                      type="text"
+                      class="modal-content__text"
+                      placeholder="Explorador"
+                      required
+                      minlength="2"
+                      maxlength="20"
+                    />
+                    <img
+                      class="modal__line"
+                      src="./images/Line.png"
+                      alt="line"
+                    />
+                    <div class="error-message" id="job-error"></div>
+                  </div>
+                  <button type="submit" class="modal-content__button">
+                    Salvar
+                  </button>
+                </form>
+              </div>
+              <div class="overlay"></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile__add">
+          <img
+            class="profile__addimg"
+            src="./images/Addbutton.png"
+            alt="Botão de adicionar"
+          />
+          <div id="addModal" class="form">
+            <div class="modal-content">
+              <span class="close" id="addClose">&times;</span>
+              <form id="addForm">
+                <h2 class="modal-content__title">Adicionar Novo Local</h2>
+                <div class="modal-content__field">
+                  <input
+                    type="text"
+                    id="locationName"
+                    class="modal-content__name"
+                    placeholder="Nome do local"
+                    required
+                    minlength="2"
+                  />
+                  <img class="modal__line" src="./images/Line.png" alt="line" />
+                </div>
+                <div class="modal-content__field">
+                  <input
+                    type="url"
+                    id="locationImage"
+                    class="modal-content__text"
+                    placeholder="Link da imagem"
+                    required
+                  />
+                  <img class="modal__line" src="./images/Line.png" alt="line" />
+                </div>
+                <button type="submit" class="modal-content__button">
+                  Adicionar
+                </button>
+              </form>
+            </div>
+            <div class="overlay"></div>
+          </div>
+        </div>
+      </section>
+      <section class="elements">
+        <div class="element">
+          <img
+            class="element__rectangle"
+            src="./images/Rectangle.png"
+            alt="retângulo branco"
+          />
+          <img
+            class="element__local"
+            src="./images/kirill-pershin-1088404-unsplash.png"
+            alt="Vale de Yosemite"
+          />
+          <div class="element__conteiner">
+            <h3 class="element__title">Vale de Yosemite</h3>
+            <img
+              class="element__like element__like--inactive"
+              src="./images/Group.png"
+              alt="like"
+            />
+            <img
+              src="./images/Union.png"
+              class="element__like element__like--active"
+              alt="like"
+            />
+          </div>
+        </div>
+        <div class="element">
+          <img
+            class="element__rectangle"
+            src="./images/Rectangle.png"
+            alt="retângulo branco"
+          />
+          <img
+            class="element__local"
+            src="./images/kirill-pershin-1404681-unsplash.png"
+            alt="Lago Louise"
+          />
+          <div class="element__conteiner">
+            <h3 class="element__title">Lago Louise</h3>
+            <img
+              class="element__like element__like--inactive"
+              src="./images/Group.png"
+              alt="like"
+            />
+            <img
+              src="./images/Union.png"
+              class="element__like element__like--active"
+              alt="like"
+            />
+          </div>
+        </div>
+        <div class="element">
+          <img
+            class="element__rectangle"
+            src="./images/Rectangle.png"
+            alt="retângulo branco"
+          />
+          <img
+            class="element__local"
+            src="./images/kirill-pershin-1556355-unsplash.png"
+            alt="Montanhas Care..."
+          />
+          <div class="element__conteiner">
+            <h3 class="element__title">Montanhas Care...</h3>
+            <img
+              class="element__like element__like--inactive"
+              src="./images/Group.png"
+              alt="like"
+            />
+            <img
+              src="./images/Union.png"
+              class="element__like element__like--active"
+              alt="like"
+            />
+          </div>
+        </div>
+        <div class="element">
+          <img
+            class="element__rectangle"
+            src="./images/Rectangle.png"
+            alt="retângulo branco"
+          />
+          <img
+            class="element__local"
+            src="./images/kirill-pershin-1404681-unsplash-2.png"
+            alt="Latemar"
+          />
+          <div class="element__conteiner">
+            <h3 class="element__title">Latemar</h3>
+            <img
+              class="element__like element__like--inactive"
+              src="./images/Group.png"
+              alt="like"
+            />
+            <img
+              src="./images/Union.png"
+              class="element__like element__like--active"
+              alt="like"
+            />
+          </div>
+        </div>
+        <div class="element">
+          <img
+            class="element__rectangle"
+            src="./images/Rectangle.png"
+            alt="retângulo branco"
+          />
+          <img
+            class="element__local"
+            src="./images/kirill-pershin-1556355-unsplash-2.png"
+            alt="Parque Nacional da Vanoise"
+          />
+          <div class="element__conteiner">
+            <h3 class="element__title">Parque Nacional da Vanoise</h3>
+            <img
+              class="element__like element__like--inactive"
+              src="./images/Group.png"
+              alt="like"
+            />
+            <img
+              src="./images/Union.png"
+              class="element__like element__like--active"
+              alt="like"
+            />
+          </div>
+        </div>
+        <div class="element">
+          <img
+            class="element__rectangle"
+            src="./images/Rectangle.png"
+            alt="retângulo branco"
+          />
+          <img
+            class="element__local"
+            src="./images/kirill-pershin-1088404-unsplash-2.png"
+            alt="Lago di Braies"
+          />
+          <div class="element__conteiner">
+            <h3 class="element__title">Lago di Braies</h3>
+            <img
+              class="element__like element__like--inactive"
+              src="./images/Group.png"
+              alt="like"
+            />
+            <img
+              src="./images/Union.png"
+              class="element__like element__like--active"
+              alt="like"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <p class="footer__copyright">&copy; 2024 Around The U.S.</p>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
