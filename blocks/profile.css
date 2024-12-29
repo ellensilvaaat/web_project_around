@@ -20,7 +20,7 @@
 }
 
 .profile__name {
-  width: 373px;
+  width: 23.3125rem;
   font-family: Inter;
   font-size: 42px;
   font-weight: 500;
@@ -116,18 +116,18 @@
 
 @media screen and (min-width: 600px) and (max-width: 768px) {
   .profile {
-    display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
-    gap: 20px;
     padding: 20px 0;
   }
 
   .profile__avatar {
     width: 6rem;
     height: 6rem;
-    padding: 0;
+  }
+
+  .profile__info {
+    padding-top: 50px;
+    padding-left: 0;
   }
 
   .profile__text {
@@ -137,6 +137,7 @@
   .profile__name {
     font-size: 1.5rem;
     line-height: 1.8rem;
+    width: 35vh;
   }
 
   .profile__subtitle {
@@ -152,5 +153,10 @@
   .profile__add {
     width: 7rem;
     height: 2.5rem;
+    position: relative;
+    right: 450px;
+    top: 100px;
+    padding-left: 0;
+    padding-top: 0;
   }
 }

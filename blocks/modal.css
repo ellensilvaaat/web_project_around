@@ -86,7 +86,7 @@
   padding-top: 29px;
 }
 
-.modal__line {
+.modal-content__line {
   width: 22.375rem;
   opacity: 0.8;
 }
@@ -171,7 +171,7 @@ select {
     padding-top: 30px;
   }
 
-  .modal__line {
+  .modal-content__line {
     width: 14.875rem;
   }
 

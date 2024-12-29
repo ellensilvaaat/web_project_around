@@ -36,3 +36,5 @@ O site é altamente interativo, permitindo que os usuários curtam as fotos que 
 O site da galeria de viagens foi criado utilizando HTML, CSS e JavaScript. A funcionalidade de pop-up foi implementada usando JavaScript, permitindo que as informações sobre as viagens sejam exibidas em um formato amigável e interativo.
 
 </p>
+
+https://ellensilvaaat.github.io/web_project_around/

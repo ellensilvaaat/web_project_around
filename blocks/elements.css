@@ -11,6 +11,7 @@
 
 .element {
   width: 17.625rem;
+  position: relative;
 }
 
 .element__rectangle {
@@ -21,8 +22,8 @@
 .element__local {
   position: relative;
   margin: 0;
-  width: 100%;
-  height: auto;
+  width: 17.625rem;
+  height: 17.625rem;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
@@ -52,6 +53,23 @@
   position: relative;
 }
 
+.element__likee:hover {
+  opacity: 0.7;
+}
+
+.element__like:hover {
+  opacity: 0.7;
+}
+
+.element__likee {
+  display: none;
+  position: relative;
+  margin: 0;
+  width: 21px;
+  height: 19px;
+  cursor: pointer;
+}
+
 .element__like {
   position: relative;
   margin: 0;
@@ -60,12 +78,11 @@
   cursor: pointer;
 }
 
-.element__like:hover {
-  opacity: 0.7;
-}
-
-.element__like--active {
-  display: none;
+.element__delete {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  z-index: 3;
 }
 
 @media screen and (max-width: 320px) {
@@ -78,11 +95,12 @@
 
   .element {
     width: 17.625rem;
+    height: 22.5625rem;
   }
 
   .element__local {
-    width: 100%;
-    height: auto;
+    width: 17.625rem;
+    height: 17.625rem;
   }
 
   .element__conteiner {
@@ -102,24 +120,29 @@
     width: 21px;
     height: 19px;
   }
+
+  .element__likee {
+    width: 21px;
+    height: 19px;
+  }
 }
 
 @media screen and (min-width: 600px) and (max-width: 768px) {
   .elements {
-    padding: 10px;
+    padding: 90px;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 15px;
   }
 
   .element {
-    width: 100%;
+    width: 17.625rem;
+    height: 22.5625rem;
   }
 
   .element__local {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
+    width: 17.625rem;
+    height: 17.625rem;
   }
 
   .element__conteiner {
@@ -131,9 +154,13 @@
     text-align: center;
   }
 
+  .element__likee {
+    width: 18px;
+    height: 18px;
+  }
+
   .element__like {
     width: 18px;
     height: 18px;
   }
 }
-

@@ -1,0 +1,85 @@
+.enlargeModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.enlargeModal.show-modal {
+  display: flex;
+}
+
+.Myplace {
+  max-width: 75vh;
+  max-height: 75vh;
+  margin-bottom: 10px;
+  position: relative;
+  left: 450px;
+  top: 0;
+}
+
+.captar__text {
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  margin: 0;
+  position: relative;
+  left: 450px;
+  top: 0;
+}
+
+.fechar {
+  position: absolute;
+  top: 20px;
+  right: 190px;
+  color: #fff;
+  font-size: 40px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-weight: bold;
+  z-index: 10000;
+}
+
+.fechar:hover {
+  color: #bbb;
+}
+
+@media screen and (max-width: 320px) {
+  .Myplace {
+    max-width: 45vh;
+    max-height: 45vh;
+    left: 18px;
+  }
+
+  .captar__text {
+    left: 18px;
+    font-size: 12px;
+  }
+
+  .fechar {
+    right: 13px;
+    top: 120px;
+    font-size: 30px;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 768px) {
+  .Myplace {
+    left: 150px;
+  }
+
+  .captar__text {
+    left: 150px;
+  }
+
+  .fechar {
+    right: 100px;
+  }
+}
