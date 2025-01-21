@@ -1,4 +1,6 @@
-import { enableValidation } from "./validate.js";
+import { openModal, closeModal, setCloseOnOverlay } from "./utils.js";
+import { Card } from "./card.js";
+import { FormValidator } from "./formValidator.js";
 
 const config = {
   formSelector: "form",
@@ -10,146 +12,26 @@ const config = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  enableValidation(config);
+  const profileModal = document.querySelector("#Modal");
+  const addModal = document.querySelector("#addModal");
+  const enlargeModal = document.querySelector("#enlargeModal");
+
+  const profileEditButton = document.querySelector("#Img");
+  const profileCloseButton = profileModal.querySelector(".close");
+  const addButton = document.querySelector(".profile__addimg");
+  const addCloseButton = addModal.querySelector(".close");
+  const enlargeCloseButton = enlargeModal.querySelector(".fechar");
 
   const profileName = document.querySelector(".profile__name");
   const profileText = document.querySelector(".profile__text");
-  const nameInput = document.querySelector(".modal-content__name");
-  const jobInput = document.querySelector(".modal-content__text");
-  const profileImage = document.getElementById("Img");
-  const profileModal = document.getElementById("Modal");
-  const profileClose = profileModal.querySelector(".close");
-  const saveButton = profileModal.querySelector(".modal-content__button");
+  const nameInput = profileModal.querySelector(".modal-content__name");
+  const jobInput = profileModal.querySelector(".modal-content__text");
 
-  const addButton = document.querySelector(".profile__addimg");
-  const addModal = document.getElementById("addModal");
-  const addClose = addModal.querySelector(".close");
-  const addForm = document.getElementById("addForm");
-  const titleInput = document.getElementById("locationName");
-  const urlInput = document.getElementById("locationImage");
+  const addForm = document.querySelector("#addForm");
+  const titleInput = document.querySelector("#locationName");
+  const urlInput = document.querySelector("#locationImage");
   const elementsContainer = document.querySelector(".elements");
 
-  const enlargeModal = document.getElementById("enlargeModal");
-  const modalImage = document.getElementById("Myplace");
-  const modalTitle = document.getElementById("captar");
-  const closeModalButton = document.querySelector(".fechar");
-
-  function openModal(modal) {
-    modal.style.display = "block";
-  }
-
-  function closeModal(modal) {
-    modal.style.display = "none";
-  }
-
-  // Atualizar informações do primeiro popup
-  saveButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    if (nameInput.validity.valid && jobInput.validity.valid) {
-      profileName.textContent = nameInput.value;
-      profileText.textContent = jobInput.value;
-      closeModal(profileModal);
-    }
-  });
-
-  // Listeners para abrir/fechar modais
-  profileImage.addEventListener("click", () => {
-    openModal(profileModal);
-    nameInput.value = ""; // Deixa o campo vazio ao abrir
-    jobInput.value = ""; // Deixa o campo vazio ao abrir
-  });
-
-  profileClose.addEventListener("click", () => {
-    closeModal(profileModal);
-  });
-
-  addButton.addEventListener("click", () => {
-    openModal(addModal);
-    addForm.reset();
-  });
-
-  addClose.addEventListener("click", () => {
-    closeModal(addModal);
-  });
-
-  addForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (titleInput.validity.valid && urlInput.validity.valid) {
-      const card = createCard({
-        name: titleInput.value,
-        link: urlInput.value,
-      });
-      elementsContainer.prepend(card);
-      closeModal(addModal);
-    }
-  });
-
-  function createCard(cardData) {
-    const card = document.createElement("div");
-    card.classList.add("element");
-    card.innerHTML = `
-      <img src="images/Trash.png" class="element__delete" alt="Excluir" />
-      <img class="element__rectangle" src="./images/Rectangle.png" />
-      <img class="element__local" src="${cardData.link}" alt="${cardData.name}" />
-      <div class="element__conteiner">
-        <h3 class="element__title">${cardData.name}</h3>
-        <img class="element__like" src="./images/Group.png" alt="like" />
-        <img class="element__likee" src="./images/Union.png" alt="liked" />
-      </div>
-    `;
-    addCardListeners(card);
-    return card;
-  }
-
-  function addCardListeners(card) {
-    const inactiveLike = card.querySelector(".element__like");
-    const activeLike = card.querySelector(".element__likee");
-    const deleteButton = card.querySelector(".element__delete");
-
-    inactiveLike.addEventListener("click", () => {
-      inactiveLike.style.display = "none";
-      activeLike.style.display = "inline";
-    });
-
-    activeLike.addEventListener("click", () => {
-      activeLike.style.display = "none";
-      inactiveLike.style.display = "inline";
-    });
-
-    deleteButton.addEventListener("click", () => {
-      card.remove();
-    });
-  }
-
-  document.addEventListener("click", (event) => {
-    if (event.target.classList.contains("element__local")) {
-      enlargeModal.style.display = "flex";
-      modalImage.src = event.target.src;
-      modalTitle.textContent = event.target
-        .closest(".element")
-        .querySelector(".element__title").textContent;
-    }
-  });
-
-  closeModalButton.addEventListener("click", () => {
-    closeModal(enlargeModal);
-  });
-
-  window.addEventListener("click", (event) => {
-    if (event.target === profileModal) closeModal(profileModal);
-    if (event.target === addModal) closeModal(addModal);
-    if (event.target === enlargeModal) closeModal(enlargeModal);
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      closeModal(profileModal);
-      closeModal(addModal);
-      closeModal(enlargeModal);
-    }
-  });
-
-  // Adicionar cartões iniciais
   const initialCards = [
     {
       name: "Vale de Yosemite",
@@ -177,8 +59,68 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  initialCards.forEach((cardData) => {
-    const card = createCard(cardData);
-    elementsContainer.appendChild(card);
+  function handleCardClick(link, name) {
+    const modalImage = document.querySelector("#Myplace");
+    const modalTitle = document.querySelector("#captar");
+    modalImage.src = link;
+    modalImage.alt = name;
+    modalTitle.textContent = name;
+    openModal(enlargeModal);
+  }
+
+  profileEditButton.addEventListener("click", () => {
+    // Define placeholders com os valores atuais do perfil
+    nameInput.placeholder = profileName.textContent;
+    jobInput.placeholder = profileText.textContent;
+
+    // Limpa os valores para que apenas os placeholders sejam exibidos
+    nameInput.value = "";
+    jobInput.value = "";
+
+    openModal(profileModal);
   });
+
+  profileCloseButton.addEventListener("click", () => closeModal(profileModal));
+  addButton.addEventListener("click", () => openModal(addModal));
+  addCloseButton.addEventListener("click", () => closeModal(addModal));
+  enlargeCloseButton.addEventListener("click", () => closeModal(enlargeModal));
+
+  profileModal
+    .querySelector(".modal-content__button")
+    .addEventListener("click", (event) => {
+      event.preventDefault();
+      if (nameInput.value.trim() && jobInput.value.trim()) {
+        profileName.textContent = nameInput.value;
+        profileText.textContent = jobInput.value;
+        closeModal(profileModal);
+      }
+    });
+
+  addForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (titleInput.value.trim() && urlInput.value.trim()) {
+      const card = new Card(
+        { name: titleInput.value, link: urlInput.value },
+        "#card-template",
+        handleCardClick
+      );
+      elementsContainer.prepend(card.generateCard());
+      closeModal(addModal);
+    }
+  });
+
+  initialCards.forEach((data) => {
+    const card = new Card(data, "#card-template", handleCardClick);
+    elementsContainer.appendChild(card.generateCard());
+  });
+
+  const forms = document.querySelectorAll(config.formSelector);
+  forms.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    validator.enableValidation();
+  });
+
+  setCloseOnOverlay(profileModal);
+  setCloseOnOverlay(addModal);
+  setCloseOnOverlay(enlargeModal);
 });

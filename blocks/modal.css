@@ -204,8 +204,13 @@ input:valid + .modal-content__line {
   font-size: 12px;
   color: red;
   margin-top: 5px;
+  position: relative;
 }
 
 input:invalid:focus + .modal-content__line + .error-message {
   display: block;
+}
+
+.popup__error_visible {
+  display: block !important; /* Força a exibição */
 }

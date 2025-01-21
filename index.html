@@ -145,6 +145,35 @@
         </div>
       </section>
       <section class="elements">
+        <template id="card-template">
+          <div class="element">
+            <img
+              src="./images/Trash.png"
+              class="element__delete"
+              alt="Excluir"
+            />
+            <img
+              class="element__rectangle"
+              src="./images/Rectangle.png"
+              alt=""
+            />
+            <img class="element__local" src="" alt="Imagem do cartão" />
+            <div class="element__conteiner">
+              <h3 class="element__title"></h3>
+              <img
+                class="element__like"
+                src="./images/Group.png"
+                alt="Curtir"
+              />
+              <img
+                class="element__likee"
+                src="./images/Union.png"
+                alt="Curtido"
+                style="display: none"
+              />
+            </div>
+          </div>
+        </template>
         <div id="enlargeModal" class="enlargeModal">
           <span class="fechar">&times;</span>
           <img id="Myplace" class="Myplace" src="" alt="Imagem ampliada" />
@@ -155,7 +184,9 @@
     <footer class="footer">
       <p class="footer__copyright">&copy; 2024 Around The U.S.</p>
     </footer>
-    <script type="module" src="./scripts/validate.js" defer></script>
+    <script type="module" src="./scripts/formValidator.js" defer></script>
     <script type="module" src="./scripts/index.js" defer></script>
+    <script type="module" src="./scripts/card.js" defer></script>
+    <script type="module" src="./scripts/utils.js" defer></script>
   </body>
 </html>
