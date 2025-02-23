@@ -41,7 +41,7 @@
             <div id="Modal" class="form">
               <div class="modal-content">
                 <span class="close">&times;</span>
-                <form novalidate id="form">
+                <form id="form">
                   <h2 class="modal-content__title">Editar perfil</h2>
                   <div class="modal-content__field">
                     <input
@@ -97,7 +97,7 @@
           <div id="addModal" class="form">
             <div class="modal-content">
               <span class="close" id="addClose">&times;</span>
-              <form id="addForm" novalidate>
+              <form id="addForm">
                 <h2 class="modal-content__title">Adicionar Novo Local</h2>
                 <div class="modal-content__field">
                   <input
@@ -131,9 +131,9 @@
                     src="./images/Line.png"
                     alt="line"
                   />
-                </div>
-                <div class="error-message" id="locationImage-error">
-                  Por favor, insira um endereço web.
+                  <div class="error-message" id="locationImage-error">
+                    Por favor, insira um endereço web.
+                  </div>
                 </div>
                 <button type="submit" class="modal-content__button">
                   Adicionar
@@ -175,18 +175,17 @@
           </div>
         </template>
         <div id="enlargeModal" class="enlargeModal">
-          <span class="fechar">&times;</span>
-          <img id="Myplace" class="Myplace" src="" alt="Imagem ampliada" />
-          <p id="captar" class="captar__text"></p>
+          <div class="enlargeModal__content">
+            <span class="fechar">&times;</span>
+            <img id="Myplace" class="Myplace" src="" alt="Imagem ampliada" />
+            <p id="captar" class="captar__text"></p>
+          </div>
         </div>
       </section>
     </main>
     <footer class="footer">
       <p class="footer__copyright">&copy; 2024 Around The U.S.</p>
     </footer>
-    <script type="module" src="./scripts/formValidator.js" defer></script>
     <script type="module" src="./scripts/index.js" defer></script>
-    <script type="module" src="./scripts/card.js" defer></script>
-    <script type="module" src="./scripts/utils.js" defer></script>
   </body>
 </html>

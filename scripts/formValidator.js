@@ -1,108 +1,157 @@
-export class FormValidator {
-  constructor(config, formElement) {
-    this._config = config;
-    this._formElement = formElement;
-    this._inputList = Array.from(
-      this._formElement.querySelectorAll(this._config.inputSelector)
-    );
-    this._buttonElement = this._formElement.querySelector(
-      this._config.submitButtonSelector
-    );
+import { Section } from "./components/Section.js";
+import { PopupWithImage } from "./components/PopupWithImage.js";
+import { PopupWithForm } from "./components/PopupWithForm.js";
+import { UserInfo } from "./components/UserInfo.js";
+import { Card } from "./components/Card.js";
+import { FormValidator } from "./components/FormValidator.js";
+
+// Configuração do validador
+const config = {
+  inputSelector: ".modal-content__text",
+  submitButtonSelector: ".modal-content__button",
+  inputErrorClass: "input-error",
+  errorClass: "popup__error_visible",
+  inactiveButtonClass: "button_inactive",
+};
+
+// Criar uma instância do validador para o segundo popup (Adicionar novo local)
+const addFormValidator = new FormValidator(
+  config,
+  document.querySelector("#addForm")
+);
+addFormValidator.enableValidation();
+
+// Criar uma instância do popup de imagem
+const popupWithImage = new PopupWithImage("#enlargeModal");
+popupWithImage.setEventListeners();
+
+// Lista de cards iniciais
+const initialCards = [
+  {
+    name: "Vale de Yosemite",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+  },
+  {
+    name: "Lago Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
+  },
+  {
+    name: "Montanhas Carecas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
+  },
+  {
+    name: "Latemar",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
+  },
+  {
+    name: "Parque Nacional da Vanoise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
+  },
+];
+
+// Seleciona o container onde os cards serão adicionados
+const elementsContainer = ".elements";
+
+// Função para criar um card
+const createCard = (data) => {
+  return new Card(data, "#card-template", (link, name) =>
+    popupWithImage.open(link, name)
+  ).generateCard();
+};
+
+// Criar a seção e renderizar os cards iniciais
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const cardElement = createCard(item);
+      section.addItem(cardElement);
+    },
+  },
+  elementsContainer
+);
+section.renderItems();
+
+// Criar a instância do usuário
+const userInfo = new UserInfo({
+  nameSelector: ".profile__name",
+  jobSelector: ".profile__text",
+});
+
+// Criar a instância do popup de edição de perfil
+const profilePopup = new PopupWithForm("#Modal", (data) => {
+  userInfo.setUserInfo({
+    name: data.name,
+    job: data.job,
+  });
+});
+profilePopup.setEventListeners();
+
+// Criar a instância do popup de adicionar novo local (CORREÇÃO DA MENSAGEM DE ERRO)
+const addCardPopup = new PopupWithForm("#addModal", (data) => {
+  const locationName = data.locationName ? data.locationName : "Local sem nome";
+  const locationImage = data.locationImage ? data.locationImage : "";
+
+  const errorMessage = document.getElementById("locationImage-error");
+
+  // Resetar mensagem de erro antes de validar
+  errorMessage.textContent = "";
+  errorMessage.style.display = "none";
+
+  if (!locationImage) {
+    errorMessage.textContent = "Por favor, insira uma URL de imagem válida.";
+    errorMessage.classList.add("popup__error_visible");
+    errorMessage.style.display = "block"; // 🔹 Garante que a mensagem apareça
+    return;
   }
 
-  // Exibe a mensagem de erro
-  _showInputError(inputElement, errorMessage) {
-    const errorElement = this._formElement.querySelector(
-      `#${inputElement.id}-error`
-    );
-
-    // Verifica se o elemento de erro existe
-    if (!errorElement) {
-      console.error(
-        `Elemento de erro não encontrado para o campo: ${inputElement.id}`
-      );
-      return;
-    }
-
-    inputElement.classList.add(this._config.inputErrorClass);
-    errorElement.textContent = errorMessage;
-    errorElement.classList.add(this._config.errorClass); // Adiciona a classe de exibição
-    console.log(`Erro exibido para o campo: ${inputElement.id}`);
+  // Validar se a URL realmente é uma imagem
+  const isValidImageURL = /\.(jpeg|jpg|gif|png|webp)$/i.test(locationImage);
+  if (!isValidImageURL) {
+    errorMessage.textContent =
+      "A URL precisa ser uma imagem válida (JPG, PNG, GIF, WEBP).";
+    errorMessage.classList.add("popup__error_visible");
+    errorMessage.style.display = "block"; // 🔹 Garante que a mensagem apareça
+    return;
   }
 
-  // Oculta a mensagem de erro
-  _hideInputError(inputElement) {
-    const errorElement = this._formElement.querySelector(
-      `#${inputElement.id}-error`
-    );
+  // Se a URL for válida, limpar a mensagem de erro
+  errorMessage.textContent = "";
+  errorMessage.classList.remove("popup__error_visible");
+  errorMessage.style.display = "none"; // 🔹 Esconde a mensagem caso a URL esteja correta
 
-    // Verifica se o elemento de erro existe
-    if (!errorElement) {
-      console.error(
-        `Elemento de erro não encontrado para o campo: ${inputElement.id}`
-      );
-      return;
-    }
+  const cardElement = createCard({
+    name: locationName,
+    link: locationImage,
+  });
 
-    inputElement.classList.remove(this._config.inputErrorClass);
-    errorElement.textContent = "";
-    errorElement.classList.remove(this._config.errorClass); // Remove a classe de exibição
-    console.log(`Erro removido para o campo: ${inputElement.id}`);
+  section.addItem(cardElement);
+  document.getElementById("addForm").reset(); // 🔹 Reseta o formulário após adicionar um novo card
+});
+addCardPopup.setEventListeners();
+
+// Adicionar eventos para abrir o modal de edição de perfil
+document.querySelector("#Img").addEventListener("click", () => {
+  const currentUserInfo = userInfo.getUserInfo();
+  profilePopup.setInputValues({
+    name: currentUserInfo.name,
+    job: currentUserInfo.job,
+  });
+  profilePopup.open();
+});
+
+// Adicionar eventos para abrir o popup de adicionar card (Zera o erro ao abrir)
+document.querySelector(".profile__addimg").addEventListener("click", () => {
+  const errorMessage = document.getElementById("locationImage-error");
+
+  if (errorMessage) {
+    errorMessage.textContent = "";
+    errorMessage.style.display = "none"; // 🔹 Reseta o erro ao abrir o popup
   }
 
-  // Verifica a validade do campo
-  _checkInputValidity(inputElement) {
-    let errorMessage = "";
-
-    if (inputElement.validity.valueMissing) {
-      errorMessage = "Preencha esse campo.";
-    } else if (
-      inputElement.validity.typeMismatch &&
-      inputElement.type === "url"
-    ) {
-      errorMessage = "Por favor, insira um endereço web.";
-    } else if (inputElement.validity.tooShort) {
-      errorMessage = `O campo deve ter no mínimo ${inputElement.minLength} caracteres.`;
-    } else if (inputElement.validity.tooLong) {
-      errorMessage = `O campo deve ter no máximo ${inputElement.maxLength} caracteres.`;
-    }
-
-    if (errorMessage) {
-      this._showInputError(inputElement, errorMessage);
-    } else {
-      this._hideInputError(inputElement);
-    }
-  }
-
-  // Alterna o estado do botão de envio
-  _toggleButtonState() {
-    const isFormValid = this._inputList.every((input) => input.validity.valid);
-
-    if (isFormValid) {
-      this._buttonElement.disabled = false;
-      this._buttonElement.classList.remove(this._config.inactiveButtonClass);
-    } else {
-      this._buttonElement.disabled = true;
-      this._buttonElement.classList.add(this._config.inactiveButtonClass);
-    }
-  }
-
-  // Configura os ouvintes de eventos
-  _setEventListeners() {
-    this._inputList.forEach((inputElement) => {
-      inputElement.addEventListener("input", () => {
-        console.log(
-          `Evento disparado para o campo: ${inputElement.id || "sem ID"}`
-        );
-        this._checkInputValidity(inputElement);
-        this._toggleButtonState();
-      });
-    });
-  }
-
-  // Habilita a validação no formulário
-  enableValidation() {
-    this._setEventListeners();
-    this._toggleButtonState();
-  }
-}
+  addCardPopup.open();
+});

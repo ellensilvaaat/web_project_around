@@ -8,43 +8,42 @@
   background-color: rgba(0, 0, 0, 0.9);
   z-index: 9999;
   justify-content: center;
-  flex-direction: column;
+  align-items: center;
 }
 
 .enlargeModal.show-modal {
   display: flex;
 }
 
+.enlargeModal__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
 .Myplace {
   max-width: 75vh;
   max-height: 75vh;
-  margin-bottom: 10px;
   position: relative;
-  left: 450px;
-  top: 0;
 }
 
 .captar__text {
   color: #fff;
   font-family: "Inter", sans-serif;
   font-size: 16px;
-  margin: 0;
-  position: relative;
-  left: 450px;
-  top: 0;
+  margin-top: 8px;
 }
 
 .fechar {
   position: absolute;
-  top: 20px;
-  right: 190px;
+  top: -40px;
+  right: -20px;
   color: #fff;
-  font-size: 40px;
+  font-size: 30px;
   cursor: pointer;
   background: none;
   border: none;
   font-weight: bold;
-  z-index: 10000;
 }
 
 .fechar:hover {
@@ -64,22 +63,24 @@
   }
 
   .fechar {
-    right: 13px;
-    top: 120px;
     font-size: 30px;
   }
 }
 
 @media screen and (min-width: 600px) and (max-width: 768px) {
   .Myplace {
-    left: 150px;
+    max-width: 65vh;
+    max-height: 65vh;
+    left: auto;
   }
 
   .captar__text {
-    left: 150px;
+    left: auto;
   }
 
   .fechar {
-    right: 100px;
+    top: -35px;
+    right: -20px;
+    font-size: 28px;
   }
 }

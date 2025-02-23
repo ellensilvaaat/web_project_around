@@ -1,126 +1,111 @@
-import { openModal, closeModal, setCloseOnOverlay } from "./utils.js";
-import { Card } from "./card.js";
-import { FormValidator } from "./formValidator.js";
+import { Section } from "./components/Section.js";
+import { PopupWithImage } from "./components/PopupWithImage.js";
+import { PopupWithForm } from "./components/PopupWithForm.js";
+import { UserInfo } from "./components/UserInfo.js";
+import { Card } from "./components/Card.js";
 
-const config = {
-  formSelector: "form",
-  inputSelector: ".modal-content__name, .modal-content__text",
-  submitButtonSelector: ".modal-content__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
+// Criar uma instância do popup de imagem
+const popupWithImage = new PopupWithImage("#enlargeModal");
+popupWithImage.setEventListeners();
+
+// Lista de cards iniciais
+const initialCards = [
+  {
+    name: "Vale de Yosemite",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+  },
+  {
+    name: "Lago Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
+  },
+  {
+    name: "Montanhas Carecas",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
+  },
+  {
+    name: "Latemar",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
+  },
+  {
+    name: "Parque Nacional da Vanoise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
+  },
+  {
+    name: "Lago di Braies",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
+  },
+];
+
+// Seleciona o container onde os cards serão adicionados
+const elementsContainer = ".elements";
+
+// Função para criar um card
+const createCard = (data) => {
+  return new Card(data, "#card-template", (link, name) =>
+    popupWithImage.open(link, name)
+  ).generateCard();
 };
 
-document.addEventListener("DOMContentLoaded", () => {
-  const profileModal = document.querySelector("#Modal");
-  const addModal = document.querySelector("#addModal");
-  const enlargeModal = document.querySelector("#enlargeModal");
+// Criar a seção e renderizar os cards iniciais
+const section = new Section(
+  {
+    items: initialCards,
+    renderer: (item) => {
+      const cardElement = createCard(item);
+      section.addItem(cardElement);
+    },
+  },
+  elementsContainer
+);
+section.renderItems();
 
-  const profileEditButton = document.querySelector("#Img");
-  const profileCloseButton = profileModal.querySelector(".close");
-  const addButton = document.querySelector(".profile__addimg");
-  const addCloseButton = addModal.querySelector(".close");
-  const enlargeCloseButton = enlargeModal.querySelector(".fechar");
+// Criar a instância do usuário
+const userInfo = new UserInfo({
+  nameSelector: ".profile__name",
+  jobSelector: ".profile__text",
+});
 
-  const profileName = document.querySelector(".profile__name");
-  const profileText = document.querySelector(".profile__text");
-  const nameInput = profileModal.querySelector(".modal-content__name");
-  const jobInput = profileModal.querySelector(".modal-content__text");
+// Criar a instância do popup de edição de perfil
+const profilePopup = new PopupWithForm("#Modal", (data) => {
+  userInfo.setUserInfo({
+    name: data.name,
+    job: data.job,
+  });
+});
+profilePopup.setEventListeners();
 
-  const addForm = document.querySelector("#addForm");
-  const titleInput = document.querySelector("#locationName");
-  const urlInput = document.querySelector("#locationImage");
-  const elementsContainer = document.querySelector(".elements");
+// Criar a instância do popup de adicionar novo local
+const addCardPopup = new PopupWithForm("#addModal", (data) => {
+  const locationName = data.locationName ? data.locationName : "Local sem nome";
+  const locationImage = data.locationImage ? data.locationImage : "";
 
-  const initialCards = [
-    {
-      name: "Vale de Yosemite",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-    },
-    {
-      name: "Lago Louise",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-    },
-    {
-      name: "Montanhas Carecas",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_bald-mountains.jpg",
-    },
-    {
-      name: "Latemar",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_latemar.jpg",
-    },
-    {
-      name: "Parque Nacional da Vanoise",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_vanoise.jpg",
-    },
-    {
-      name: "Lago di Braies",
-      link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lago.jpg",
-    },
-  ];
-
-  function handleCardClick(link, name) {
-    const modalImage = document.querySelector("#Myplace");
-    const modalTitle = document.querySelector("#captar");
-    modalImage.src = link;
-    modalImage.alt = name;
-    modalTitle.textContent = name;
-    openModal(enlargeModal);
+  if (!locationImage) {
+    alert("Por favor, insira uma URL de imagem válida.");
+    return;
   }
 
-  profileEditButton.addEventListener("click", () => {
-    // Define placeholders com os valores atuais do perfil
-    nameInput.placeholder = profileName.textContent;
-    jobInput.placeholder = profileText.textContent;
-
-    // Limpa os valores para que apenas os placeholders sejam exibidos
-    nameInput.value = "";
-    jobInput.value = "";
-
-    openModal(profileModal);
+  const cardElement = createCard({
+    name: locationName,
+    link: locationImage,
   });
 
-  profileCloseButton.addEventListener("click", () => closeModal(profileModal));
-  addButton.addEventListener("click", () => openModal(addModal));
-  addCloseButton.addEventListener("click", () => closeModal(addModal));
-  enlargeCloseButton.addEventListener("click", () => closeModal(enlargeModal));
+  section.addItem(cardElement);
+});
+addCardPopup.setEventListeners();
 
-  profileModal
-    .querySelector(".modal-content__button")
-    .addEventListener("click", (event) => {
-      event.preventDefault();
-      if (nameInput.value.trim() && jobInput.value.trim()) {
-        profileName.textContent = nameInput.value;
-        profileText.textContent = jobInput.value;
-        closeModal(profileModal);
-      }
-    });
+// Adicionar eventos para abrir o modal de edição de perfil
+document.querySelector("#Img").addEventListener("click", () => {
+  const nameInput = document.querySelector(".modal-content__name");
+  const jobInput = document.querySelector(".modal-content__text");
 
-  addForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    if (titleInput.value.trim() && urlInput.value.trim()) {
-      const card = new Card(
-        { name: titleInput.value, link: urlInput.value },
-        "#card-template",
-        handleCardClick
-      );
-      elementsContainer.prepend(card.generateCard());
-      closeModal(addModal);
-    }
-  });
+  // Resetar os inputs para forçar a exibição do placeholder
+  nameInput.value = "";
+  jobInput.value = "";
 
-  initialCards.forEach((data) => {
-    const card = new Card(data, "#card-template", handleCardClick);
-    elementsContainer.appendChild(card.generateCard());
-  });
+  profilePopup.open();
+});
 
-  const forms = document.querySelectorAll(config.formSelector);
-  forms.forEach((formElement) => {
-    const validator = new FormValidator(config, formElement);
-    validator.enableValidation();
-  });
-
-  setCloseOnOverlay(profileModal);
-  setCloseOnOverlay(addModal);
-  setCloseOnOverlay(enlargeModal);
+// Adicionar eventos para abrir o popup de adicionar card
+document.querySelector(".profile__addimg").addEventListener("click", () => {
+  addCardPopup.open();
 });

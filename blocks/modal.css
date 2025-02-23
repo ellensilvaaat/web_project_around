@@ -214,3 +214,11 @@ input:invalid:focus + .modal-content__line + .error-message {
 .popup__error_visible {
   display: block !important; /* Força a exibição */
 }
+
+.modal_opened {
+  display: flex;
+}
+
+.open {
+  display: flex;
+}
