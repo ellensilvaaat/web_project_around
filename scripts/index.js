@@ -3,12 +3,25 @@ import { PopupWithImage } from "./components/PopupWithImage.js";
 import { PopupWithForm } from "./components/PopupWithForm.js";
 import { UserInfo } from "./components/UserInfo.js";
 import { Card } from "./components/Card.js";
+import { FormValidator } from "./FormValidator.js";
 
-// Criar uma instância do popup de imagem
+const config = {
+  inputSelector: ".modal-content__text",
+  submitButtonSelector: ".modal-content__button",
+  inputErrorClass: "input-error",
+  errorClass: "popup__error_visible",
+  inactiveButtonClass: "button_inactive",
+};
+
+const addFormValidator = new FormValidator(
+  config,
+  document.querySelector("#addForm")
+);
+addFormValidator.enableValidation();
+
 const popupWithImage = new PopupWithImage("#enlargeModal");
 popupWithImage.setEventListeners();
 
-// Lista de cards iniciais
 const initialCards = [
   {
     name: "Vale de Yosemite",
@@ -36,17 +49,14 @@ const initialCards = [
   },
 ];
 
-// Seleciona o container onde os cards serão adicionados
 const elementsContainer = ".elements";
 
-// Função para criar um card
 const createCard = (data) => {
   return new Card(data, "#card-template", (link, name) =>
     popupWithImage.open(link, name)
   ).generateCard();
 };
 
-// Criar a seção e renderizar os cards iniciais
 const section = new Section(
   {
     items: initialCards,
@@ -59,13 +69,11 @@ const section = new Section(
 );
 section.renderItems();
 
-// Criar a instância do usuário
 const userInfo = new UserInfo({
   nameSelector: ".profile__name",
   jobSelector: ".profile__text",
 });
 
-// Criar a instância do popup de edição de perfil
 const profilePopup = new PopupWithForm("#Modal", (data) => {
   userInfo.setUserInfo({
     name: data.name,
@@ -74,38 +82,52 @@ const profilePopup = new PopupWithForm("#Modal", (data) => {
 });
 profilePopup.setEventListeners();
 
-// Criar a instância do popup de adicionar novo local
 const addCardPopup = new PopupWithForm("#addModal", (data) => {
-  const locationName = data.locationName ? data.locationName : "Local sem nome";
-  const locationImage = data.locationImage ? data.locationImage : "";
+  const locationName = data.locationName || "Local sem nome";
+  const locationImage = data.locationImage || "";
+
+  const errorMessage = document.getElementById("locationImage-error");
+
+  errorMessage.textContent = "";
+  errorMessage.style.display = "none";
 
   if (!locationImage) {
-    alert("Por favor, insira uma URL de imagem válida.");
+    errorMessage.textContent = "Por favor, insira uma URL de imagem válida.";
+    errorMessage.classList.add("popup__error_visible");
+    errorMessage.style.display = "block";
     return;
   }
 
-  const cardElement = createCard({
-    name: locationName,
-    link: locationImage,
-  });
+  const isValidImageURL = /\.(jpeg|jpg|gif|png|webp)$/i.test(locationImage);
+  if (!isValidImageURL) {
+    errorMessage.textContent =
+      "A URL precisa ser uma imagem válida (JPG, PNG, GIF, WEBP).";
+    errorMessage.classList.add("popup__error_visible");
+    errorMessage.style.display = "block";
+    return;
+  }
 
+  const cardElement = createCard({ name: locationName, link: locationImage });
   section.addItem(cardElement);
+  document.getElementById("addForm").reset();
 });
 addCardPopup.setEventListeners();
 
-// Adicionar eventos para abrir o modal de edição de perfil
 document.querySelector("#Img").addEventListener("click", () => {
   const nameInput = document.querySelector(".modal-content__name");
   const jobInput = document.querySelector(".modal-content__text");
 
-  // Resetar os inputs para forçar a exibição do placeholder
   nameInput.value = "";
   jobInput.value = "";
 
   profilePopup.open();
 });
 
-// Adicionar eventos para abrir o popup de adicionar card
 document.querySelector(".profile__addimg").addEventListener("click", () => {
+  const errorMessage = document.getElementById("locationImage-error");
+  if (errorMessage) {
+    errorMessage.textContent = "";
+    errorMessage.style.display = "none";
+  }
   addCardPopup.open();
 });

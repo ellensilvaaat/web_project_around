@@ -5,7 +5,6 @@ export class Popup {
   }
 
   open() {
-    // Adiciona a classe correta dependendo do modal
     if (this._popup.id === "enlargeModal") {
       this._popup.classList.add("show-modal");
     } else {
@@ -15,7 +14,6 @@ export class Popup {
   }
 
   close() {
-    // Remove a classe correta dependendo do modal
     if (this._popup.id === "enlargeModal") {
       this._popup.classList.remove("show-modal");
     } else {

@@ -12,12 +12,10 @@ export class PopupWithForm extends Popup {
     const inputValues = {};
     this._inputList.forEach((input) => {
       if (this._form.id === "form") {
-        // Popup de edição de perfil
         inputValues[
           input.classList.contains("modal-content__name") ? "name" : "job"
         ] = input.value.trim();
       } else if (this._form.id === "addForm") {
-        // Popup de adicionar novo local
         inputValues[input.id] = input.value.trim();
       }
     });
@@ -28,7 +26,7 @@ export class PopupWithForm extends Popup {
     this._inputList.forEach((input) => {
       if (this._form.id === "form") {
         if (input.classList.contains("modal-content__name")) {
-          input.value = data.name ? data.name : ""; // Mantém o campo vazio se não houver valor salvo
+          input.value = data.name ? data.name : "";
         } else if (input.classList.contains("modal-content__text")) {
           input.value = data.job ? data.job : "";
         }

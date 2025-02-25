@@ -24,40 +24,38 @@ export class Card {
   }
 
   _toggleLike() {
-    // Alterna entre os dois ícones (curtido/não curtido)
-    if (this._likedButton.style.display === "none") {
-      this._likeButton.style.display = "none"; // Esconde o botão de "não curtido"
-      this._likedButton.style.display = "inline-block"; // Mostra o botão de "curtido"
+    const isLiked =
+      this._likeButton.getAttribute("src") === "./images/Group.png";
+
+    if (isLiked) {
+      this._likeButton.setAttribute("src", "./images/Union.png");
+      this._likeButton.setAttribute("alt", "Curtido");
     } else {
-      this._likeButton.style.display = "inline-block"; // Mostra o botão de "não curtido"
-      this._likedButton.style.display = "none"; // Esconde o botão de "curtido"
+      this._likeButton.setAttribute("src", "./images/Group.png");
+      this._likeButton.setAttribute("alt", "Curtir");
     }
   }
 
   _deleteCard() {
     this._element.remove();
-    this._element = null; // Remover referência para evitar vazamento de memória
+    this._element = null;
   }
 
   generateCard() {
     this._element = this._getTemplate();
-
     this._imageElement = this._element.querySelector(".element__local");
     this._titleElement = this._element.querySelector(".element__title");
-    this._likeButton = this._element.querySelector(".element__like"); // Ícone inicial (não curtido)
-    this._likedButton = this._element.querySelector(".element__likee"); // Ícone de "curtido"
+    this._likeButton = this._element.querySelector(".element__like");
     this._deleteButton = this._element.querySelector(".element__delete");
 
     this._imageElement.src = this._link;
     this._imageElement.alt = this._name;
     this._titleElement.textContent = this._name;
 
-    // Garantir que o estado inicial seja "não curtido"
-    this._likeButton.style.display = "inline-block"; // Mostra o botão "não curtido"
-    this._likedButton.style.display = "none"; // Esconde o botão "curtido"
+    this._likeButton.setAttribute("src", "./images/Group.png");
+    this._likeButton.setAttribute("alt", "Curtir");
 
     this._setEventListeners();
-
     return this._element;
   }
 }
